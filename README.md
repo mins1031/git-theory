@@ -105,5 +105,8 @@
    origin  https://github.com/mins1031/spring-boot-jpa-mysql-minair.git (fetch)
    origin  https://github.com/mins1031/spring-boot-jpa-mysql-minair.git (push)
    ```
-   * git remote add <remoteName> <url> : 리모트 저장소 추가하는 명령어이다. 현 디렉토리의 리모트 저장소로이름을 정하고 url을 설정한다
-    
+   * git remote add 'remoteName' 'url' : 리모트 저장소 추가하는 명령어이다. 현 디렉토리의 리모트 저장소로이름을 정하고 url을 설정한다
+   ```
+   git remote add origin https://github.com/mins1031/git-theory
+   ```
+   * git push : 로컬 디렉토리에 저장된 커밋을 리모트 저장소로 옮기는 명령어가 push이다 반대로 리모트 저장소의 내용을 가져오는것을 pull한다고 한다. 
