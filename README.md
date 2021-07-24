@@ -263,8 +263,23 @@ $ git checkout -b test 커밋id
   위처럼 적용후 git add work.txt를 해주면 깃에게 충돌을 해결했다는 의미의 메세지를 던져준것과 같다
   ```
   
-  
-  
+ * 3 way-merge 
+ ```
+ front   base   back   2 way merge   3 way merge
+ a        a      a         a             a
+ f        b      b         ?             f
+ c        c      k         ?             k
+ f        d      k         ?             ?
+ 
+ front와 back은 base로 부터 가지쳐진 브랜치들이고 내용이 바뀌었다.
+ 2 way merge는 front와 back 두개의 브랜치를 병합시의 결과를 나타낸다 3개가 충돌이 나게 된다
+ 반면 3 way merge는 front와 back의 조상 버전인 base의 내용과 비교해 충돌여부를 나타낸다
+ front의 2번째 f와 base의 b와 front의 b 이렇게 3개를 비교시 back은 base와의 내용을 보았을 때 바뀌지 않았지만 front는 f로 바뀌었음으로 바뀐값을 병합된 값으로 적용하고
+ 마지막 front의 4번째 f값 base의 d front의 k값을 보았을때 셋다 값이 다르기때문에 어떤 값이 적용되야하는지 모르고 충돌이 발생하게 된다
+ ```
+ 
+ ### git flow
+ <img src="https://s3-ap-northeast-2.amazonaws.com/opentutorials-user-file/module/2676/5263.png"/>
   
   
   
