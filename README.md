@@ -281,7 +281,9 @@ $ git checkout -b test 커밋id
  ### git flow
  <img src="https://s3-ap-northeast-2.amazonaws.com/opentutorials-user-file/module/2676/5263.png"/>
   
-  
-  
+ > git flow 모델은 브랜치를 어떻게 운영할 것인가? 를 보여주는 좋은 사례중 하나라고 할 수 있다. 사진에서 볼수 있듯 master와 develop 브랜치, 기능개발시 사용하는 feature 브랜치와 출시시 사용하는 release 브랜치, 마지막으로 긴급한 수정사항을 반영하는 hotfix브랜치가 있다.
+ 
+ * master는 언제나 실행가능한 최신의 버전이어야 한다.
+ * 또한 실행가능한 상태를 만들어가는 과정은 develop 브랜치에서 진행해야한다
   
   
