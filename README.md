@@ -91,7 +91,7 @@
      git revert v4의 체크섬
      ```
  
- > 4. 리모트 저장소 (remote Repository)
+ ## 5. 리모트 저장소 (remote Repository)
    * 리모트 저장소는 인터넷이나 네트워크 어딘가에 있는 저장소를 말한다. 예를 들어 깃헙에 만든 저장소 역시 리모트 저장소이다
    * 그렇다면 내 로컬 파일을 원하는 저장소에 보내기 위해선 저장소 경로에 파일을 보내라고 git에게 알려주어야 한다
    > git remote (리모트 저장소 확인)
@@ -110,3 +110,46 @@
    git remote add origin https://github.com/mins1031/git-theory
    ```
    * git push : 로컬 디렉토리에 저장된 커밋을 리모트 저장소로 옮기는 명령어가 push이다 반대로 리모트 저장소의 내용을 가져오는것을 pull한다고 한다. 
+
+## 6. branch를 통한 협업
+> 브랜치를 이해하기전 커밋간의 관계를 살펴보아야한다. 각각의 커밋은 이전 커밋의 해시정보를 포함하고있다. 커밋은 트리구조로 .git파일에 저장되어 있으며 각 커밋은 이전 커밋의 주소값(해시정보값)을 포함하고 있다.
+**위에도 언급했지만 https://seonkyukim.github.io/git-tutorial/git-branch/ 님의 내용을 보고 복기하는 내용이다. 예시가 너무 잘되어있어 참고한다**
+<img src="https://seonkyukim.github.io/git-tutorial/git-branch/"/>
+* 위의 사진에서 초록 박스는 커밋이다 오른쪽이 제일 최근 커밋이다.
+* 위와 같은 모습들이 나무가 가지치는 모습과 같아 브랜치라고 부른다고 한다. 
+* 처음생기는 브랜치를 master브랜치라고 한다. master브랜치에서 다른 브랜치들이 뻗어가는 형태가 구성된다.
+* 하나의 게시판 api를 구성시 한명은 게시판 CRUD작업을 하고 다른 한명은 로그인 작업을 할때 두명 모두 master브랜치에서 작업할 경우 다른사람의 작업에 영향을 주고 받을 수 있기 때문에 master브랜치에서 각 브랜치를 나눠 개발후 다시 합치는 과정으로 진행한다
+<img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/06.png"/>
+* 첫 커밋은 맨 왼쪽 초록상자를 master 브랜치가 가르키고 있을 것이고 커밋이 이어져 세번쨰 커밋시 master 브랜치는 맨 오른쪽 초록 상자를 가리킨다. 즉 브랜치는 최신 커밋을 가리키고 있다.
+### 브랜치 생성
+* 여기서 snu라는 브랜치를 만든다.
+```
+$ git branch snu
+
+$ git branch
+* master
+  snu
+```
+<img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/07.png"/>
+* 현재 브랜치를 가리키고 있는 포인터(주소값)을 HEAD라고 한다.
+### 브랜치 이동
+* git checkout은 브랜치를 이동하는 명령어인데 head를 이동시키는 명령어라고 생각하면 된다.
+```
+$ git checkout snu
+snu 브랜치로 이동하는 명령어
+```
+<img scr="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/08.png"/>
+* master브랜치에서 snu 브랜치로 왔으므로 head는 snu를 가리키로 있다.
+```
+$ git checkout -b snu
+브랜치 생성과 동시에 생성 브랜치로 이동하는 명령어
+
+$ git checkout -b test 커밋id
+예전 커밋(버전)을 기준으로 다른 브랜치를 만들고 싶은 경우 사용한다. 사용할 브랜치명과 기준되는 커밋의 id값을 명령어에 포함해준다.
+```
+### 브랜치 작업
+<img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/10.png"/>
+* 각 브랜치가 각자의 작업을 끝내고 log를 보면 위와 같은 모습이다.
+
+
+
