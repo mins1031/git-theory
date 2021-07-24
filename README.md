@@ -119,10 +119,14 @@
 * 위와 같은 모습들이 나무가 가지치는 모습과 같아 브랜치라고 부른다고 한다. 
 * 처음생기는 브랜치를 master브랜치라고 한다. master브랜치에서 다른 브랜치들이 뻗어가는 형태가 구성된다.
 * 하나의 게시판 api를 구성시 한명은 게시판 CRUD작업을 하고 다른 한명은 로그인 작업을 할때 두명 모두 master브랜치에서 작업할 경우 다른사람의 작업에 영향을 주고 받을 수 있기 때문에 master브랜치에서 각 브랜치를 나눠 개발후 다시 합치는 과정으로 진행한다
+
 <img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/06.png"/>
+
 * 첫 커밋은 맨 왼쪽 초록상자를 master 브랜치가 가르키고 있을 것이고 커밋이 이어져 세번쨰 커밋시 master 브랜치는 맨 오른쪽 초록 상자를 가리킨다. 즉 브랜치는 최신 커밋을 가리키고 있다.
+
 ### 브랜치 생성
 * 여기서 snu라는 브랜치를 만든다.
+
 ```
 $ git branch snu
 
@@ -130,16 +134,22 @@ $ git branch
 * master
   snu
 ```
+
 <img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/07.png"/>
+
 * 현재 브랜치를 가리키고 있는 포인터(주소값)을 HEAD라고 한다.
+
 ### 브랜치 이동
 * git checkout은 브랜치를 이동하는 명령어인데 head를 이동시키는 명령어라고 생각하면 된다.
+
 ```
 $ git checkout snu
 snu 브랜치로 이동하는 명령어
 ```
+
 <img scr="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/08.png"/>
 * master브랜치에서 snu 브랜치로 왔으므로 head는 snu를 가리키로 있다.
+
 ```
 $ git checkout -b snu
 브랜치 생성과 동시에 생성 브랜치로 이동하는 명령어
@@ -147,9 +157,116 @@ $ git checkout -b snu
 $ git checkout -b test 커밋id
 예전 커밋(버전)을 기준으로 다른 브랜치를 만들고 싶은 경우 사용한다. 사용할 브랜치명과 기준되는 커밋의 id값을 명령어에 포함해준다.
 ```
-### 브랜치 작업
-<img src="https://seonkyukim.github.io/assets/images/2019-03-01-git-branch/10.png"/>
-* 각 브랜치가 각자의 작업을 끝내고 log를 보면 위와 같은 모습이다.
 
+### 브랜치 병합(merge)
+* v3 버전 master에서 apple,goole이라는 브랜치로 나눠지면 각각의 용도에 맞는 버전을 나눠주는 훌륭한 기능이 된다
+* 이제 각각의 기능인 master,apple,goole중 apple의 내용을 master브랜치에 더하고 싶은 경우가 있따
+* 이러한 경우 merge. 브랜치 병합을 사용한다.
+* 이때 master,apple,google이 나눠진 분기점이 되는 v3를 base 커밋이라고 하고 base를 바탕으로 merge된 커밋을 merge commit이라고 한다.
 
+```
+ $ git log --all --graph --oneline
+* 64ca85a (HEAD -> o2) o2 work2
+| * cd66bc9 (master) master work 2
+|/
+* f843ece work 1
 
+ ```
+* git log 명령어를 통해 본 위의 로그그래프는 work1 커밋을 base로 master와 o2의 work2 버전이 커밋된것을 볼 수 있다.
+* 이제 위의 상태에서 서로 다른 파일이 있는 브랜치를 병합하는경우는?
+  * master work2는 master.txt와 work.txt가 있고 o2 는 o2.txt, work.txt가 있다. 
+  * 이때 master에 o2 브랜치를 병합하고 싶어지는 경우엔 우선 master 브랜치를 head가 가리키게 하고 현 브랜치로 가져오고 싶은 브랜치를 merge명령을 통해 지정해 가져오면 된다
+  ```
+  $ merge o2
+  명령어를 입력하면 편집툴(nano나 vim)이 나오는데 위쪽에 왜 병합하는지에 대한 메세지를 남길수 있다.
+  머지 하게 되면 o2는 그대로 남아있고 master는 o2와 합쳐진 형태로 만들어지게 된다
+
+  $ git log --all --graph --oneline
+  *   e456f6a (HEAD -> master) Merge branch 'o2' into master merge 실습
+  |\
+  | * 64ca85a (o2) o2 work2
+  * | cd66bc9 master work 2
+  |/
+  * f843ece work 1
+  master와 o2가 합쳐져(둘을 조상으로 하는) 하나의 새 커밋이 된것을 볼 수 있다.
+  ```
+* 이번엔 같은 파일에서 다른 부분이 수정된 경우 병합되면 어떻게 될까
+  * 똑같이 master와 o2브랜치를 놓고 이 두 브랜치엔 work.txt란 파일이 있다.
+  ```
+  master의 work.txt는
+  #title 
+  master content
+  
+  #title 
+  content
+  이렇게 있고
+  
+  o2의 work.txt는
+  #title 
+  content
+  
+  #title 
+  o2 content
+  이런 방식으로 구성되어있다 
+  이 둘을 합치게되면 
+  
+  $ cat work.txt
+
+  # title
+  master content
+
+  # title
+  o2 content
+  이렇게 병합된다.
+  ```
+  * 위의 내용을 보면 알겠지만 결국 같은 파일을 수정해도 같은 내용을 수정하지 않았지 떄문에 공존할 수 있어 병합을 시켜주었다.
+
+* 마지막으로 이번엔 같은파일의 같은 부분을 수정하는 경우이다.
+  * 깃은 이것을 자동으로 수정하지 못하고 '충돌'이 일어나게 된다.
+  * 전 경우와 똑같이 master,o2 브랜치와 각 브랜치엔 work.txt파일이 있다
+  ```
+  master는 
+  # title
+  content
+  master   ===> o2에선 master대신 o2가 적힘
+  # title
+  content
+  이렇게 되면 둘의 같은 부분에서 수정이 일어 낫고 이걸 병합하려고 하면
+  
+  $ git merge o2
+  Auto-merging work.txt
+  CONFLICT (content): Merge conflict in work.txt
+  Automatic merge failed; fix conflicts and then commit the result.
+  위처럼 충돌에러가 발생하게 된다
+  ```
+  * 그래서 work.txt를 확인해보면 
+  ```
+  # title
+  content
+  <<<<<<< HEAD
+  master
+  =======
+  o2
+  >>>>>>> o2
+  # title
+  content
+  위처럼 보인다
+  가운데 ===는 '구분자'라고 하고 <<<<부터 구분자까진 head 브랜치에서의 내용이고 구분자부터 >>>>까진 o2브랜치의 내용이었다는 것을 표기하고 있다. 
+  저 부분은 깃이 자동으로 병합을 하지 못해 개발자에게 수정을 요구하는 표기이다.
+  이후 master와 o2내용둘다 하려면
+  # title
+  content
+  master, o2
+  # title
+  content
+  
+  위처럼 적용후 git add work.txt를 해주면 깃에게 충돌을 해결했다는 의미의 메세지를 던져준것과 같다
+  ```
+  
+  
+  
+  
+  
+  
+  
+  
