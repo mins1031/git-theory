@@ -277,6 +277,49 @@ $ git checkout -b test 커밋id
  front의 2번째 f와 base의 b와 front의 b 이렇게 3개를 비교시 back은 base와의 내용을 보았을 때 바뀌지 않았지만 front는 f로 바뀌었음으로 바뀐값을 병합된 값으로 적용하고
  마지막 front의 4번째 f값 base의 d front의 k값을 보았을때 셋다 값이 다르기때문에 어떤 값이 적용되야하는지 모르고 충돌이 발생하게 된다
  ```
+ ### 브랜치 merge와 rebase
+ **https://firework-ham.tistory.com/12 참고**
+ > merge와 rebase는 비슷해보이면서도 차이점을 가지고 있다.
+ * merge는 `브랜치를 통합하는 것` 이고 rebase는 `브랜치의 base를 옮긴다는 개념`의 차이정도가 있다
+ #### Rebase
+ > rebase는 의미 비슷하게 base를 재설정한다는 의미이다.
+ * base는 각 브랜치의 base를 의미한다
+ * 각 브랜치는 분기되었던 base지점을 가지고 있어 base부터 코드를 수정하게 된다
+ <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FcofZo0%2FbtqBkOJybm6%2FRshCv0OqsydpuNCRPcIxu1%2Fimg.png'/>
+
+ * b 지점을 base로 가진 브랜치가 D,E 커밋을 진행
+ * C지점으로 base를 이동하기 위해 브랜치에서 C지점으로 rebase를 한다.
+ * C지점으로 rebase 되면 기존 D,E 커밋은 새롭게 정렬되어 C지점 이후로 변경된다.
+ * rebase로 base를 옮겨서 작업하면 git history가 굉장히 깔끔해진다. 
+ 
+ #### Rebase를 사용했을때 git History의 효과 확인
+ > branch1, branch2를 dev 브랜치에서 생성한뒤 각각 1- commit1  2- commit2,3를 했다. 이상태에서 dev브랜치에 branch1, branch2 두개를 dev에 반영해보려 한다.
+ 1) merge만 사용했을 경우
+   1-1) dev에 branch1 머지
+   <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFutre%2FbtqBhDC9s50%2Fcx5OzkGcWulfBc2Qa8uuIk%2Fimg.png'/>
+   
+   * dev와 branch1을 머지한 결과 commit1이 dev로 머지되는 것을 볼수 있다
+   1-2) dev에 branch2 머지
+   <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2F8jS5p%2FbtqBjBj2KKF%2FQHGBC5iOYBf555TadOxFH1%2Fimg.png"/>
+   
+   * 머지만으로 dev에 코드를 추가하면 위와 같이 히스토리가 꼬이게 된다.
+   * 개발자가 늘어나면 각 브랜치도 늘어나게 되고 히스토리가 굉장이 복잡해진다
+ 2) merge와 rebase를 사용하여 dev에 반영
+   2-1) dev에 branch1 머지
+   <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FFutre%2FbtqBhDC9s50%2Fcx5OzkGcWulfBc2Qa8uuIk%2Fimg.png'/>
+   
+   2-2) dev에 branch1 rebase
+   * branch1이 merge된 dev 브랜치를 branch2에 rebase하면
+   <img src='https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FbFl3P2%2FbtqBjCJ6hsW%2F3FEkI3CfSPBPK7l6dTjVVK%2Fimg.png'/>
+   
+   * rebase를 하게 되면 히스토리를 커밋이 재정렬하고 branch2의 base 자체를 dev로 지정이 된다
+ 
+   2-3) dev와 branch2 머지
+   이상태에서 branch2와 dev를 머지하게 된다면
+   <img src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FdsZLrw%2FbtqBjUKskkS%2FY3OKpcjkyFJVUzDRFwkRk0%2Fimg.png"/>
+   
+   * branch2를 dev에 머지하면 위 사진과 같이 깔끔한 git 히스토리를 확인할 수 있다.
+   * 개발자가 여러명이더라도 순서대로 커밋한 것과 같은 히스토리 생성이 가능하다.
  
  ### git flow
  <img src="https://s3-ap-northeast-2.amazonaws.com/opentutorials-user-file/module/2676/5263.png"/>
